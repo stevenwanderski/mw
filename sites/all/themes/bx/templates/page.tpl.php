@@ -10,7 +10,7 @@
   </head>
   <body<?php print phptemplate_body_attributes($is_front, $layout); ?>>
 
-	<div id='page'><div class='limiter clear-block'>		
+	<div id='page' class="<?php if($node){ print "page-node-" . $node->nid; } ?>"><div class='limiter clear-block'>		
 		
 		<!-- header -->
 		<?php if ($header): ?>
@@ -116,6 +116,12 @@
 						<div class="clear"></div>
 					</div></div>
 
+        	<?php if(!$is_front): ?>
+		        <div id='content' class='clear-block'>
+		        	<?php print $content ?>
+		        </div>
+		      <?php endif; ?>
+
 					<!-- "services" blocks -->
 					<?php if ($service_blocks): ?>
 						<div id="service-blocks" class="clearfix">
@@ -123,12 +129,6 @@
 							<div class="clear"></div>
 						</div>
 					<?php endif; ?>				
-        
-        	<?php if(!$is_front): ?>
-		        <div id='content' class='clear-block'>
-		        	<?php print $content ?>
-		        </div>
-		      <?php endif; ?>
 
 				<?php endif; ?>
 				
