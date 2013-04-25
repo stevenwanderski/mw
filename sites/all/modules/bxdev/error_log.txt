@@ -1,0 +1,44 @@
+[04-Jan-2011 04:13:23] PHP Parse error:  syntax error, unexpected '{' in /Users/tyrionlannister/Desktop/dev/marketwerks/sites/all/themes/bx/templates/page.tpl.php on line 32
+[04-Jan-2011 05:39:43] PHP Fatal error:  Call to undefined function  views_build_view() in /Users/tyrionlannister/Desktop/dev/marketwerks/sites/all/themes/bx/templates/page.tpl.php on line 59
+[11-Jan-2011 09:30:25] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 255613 bytes) in /var/www/html/includes/database.mysql.inc on line 301
+[11-Jan-2011 09:30:40] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 42 bytes) in /var/www/html/includes/menu.inc on line 2370
+[11-Jan-2011 09:30:49] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 90208 bytes) in /var/www/html/includes/menu.inc on line 986
+[11-Jan-2011 09:30:58] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 84868 bytes) in /var/www/html/includes/cache.inc on line 105
+[11-Jan-2011 09:31:01] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 398030 bytes) in /var/www/html/includes/database.mysql.inc on line 301
+[11-Jan-2011 09:31:05] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 398030 bytes) in /var/www/html/includes/database.mysql.inc on line 301
+[11-Jan-2011 09:31:18] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 77824 bytes) in /var/www/html/sites/all/modules/date/date_timezone/date_timezone.install on line 349
+[11-Jan-2011 09:31:24] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 38 bytes) in /var/www/html/includes/database.mysql.inc on line 160
+[11-Jan-2011 09:31:29] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 398021 bytes) in /var/www/html/includes/database.mysql.inc on line 301
+[11-Jan-2011 09:32:07] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 435230 bytes) in /var/www/html/includes/database.mysql.inc on line 144
+[13-Jan-2011 12:59:11] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 57257 bytes) in /var/www/html/includes/common.inc on line 2466
+[13-Jan-2011 12:59:33] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 19456 bytes) in /var/www/html/sites/all/modules/views/plugins/views_plugin_cache.inc on line 200
+[13-Jan-2011 13:01:33] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 57257 bytes) in /var/www/html/includes/common.inc on line 2466
+[13-Jan-2011 13:02:50] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 1024 bytes) in /var/www/html/sites/all/modules/views/includes/handlers.inc on line 77
+[20-Jan-2011 06:33:30] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 51201 bytes) in /var/www/html/sites/all/themes/rubik/page.tpl.php on line 53
+[20-Jan-2011 06:33:43] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 4864 bytes) in /var/www/html/sites/all/modules/views/plugins/views_plugin_cache.inc on line 178
+[20-Jan-2011 06:34:19] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 51201 bytes) in /var/www/html/sites/all/themes/rubik/page.tpl.php on line 53
+[20-Jan-2011 06:34:45] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 4864 bytes) in /var/www/html/sites/all/modules/views/plugins/views_plugin_cache.inc on line 178
+[20-Jan-2011 06:37:32] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 40961 bytes) in /var/www/html/includes/theme.inc on line 1065
+[20-Jan-2011 06:37:35] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 40961 bytes) in /var/www/html/includes/theme.inc on line 1065
+[20-Jan-2011 06:37:40] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 40961 bytes) in /var/www/html/includes/theme.inc on line 1065
+[20-Jan-2011 06:37:46] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 40961 bytes) in /var/www/html/includes/theme.inc on line 1065
+[20-Jan-2011 06:37:50] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 40961 bytes) in /var/www/html/includes/theme.inc on line 1065
+[20-Jan-2011 06:37:53] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 40961 bytes) in /var/www/html/includes/theme.inc on line 1065
+[20-Jan-2011 06:38:03] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 77824 bytes) in /var/www/html/modules/system/system.install on line 699
+[20-Jan-2011 06:38:11] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 2949 bytes) in /var/www/html/includes/database.mysql.inc on line 321
+[20-Jan-2011 06:38:16] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 353568 bytes) in /var/www/html/includes/database.inc on line 236
+[20-Jan-2011 06:38:40] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 232029 bytes) in /var/www/html/includes/database.mysql.inc on line 301
+[20-Jan-2011 06:38:48] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 901 bytes) in /var/www/html/includes/database.mysql-common.inc on line 41
+[20-Jan-2011 06:38:54] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 279902 bytes) in /var/www/html/includes/menu.inc on line 986
+[20-Jan-2011 06:43:17] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 40961 bytes) in /var/www/html/includes/theme.inc on line 1065
+[20-Jan-2011 13:05:09] PHP Parse error:  syntax error, unexpected ':' in /var/www/html/sites/all/themes/bx/templates/page.tpl.php on line 76
+[20-Jan-2011 17:46:45] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 7572 bytes) in /var/www/html/sites/all/modules/imageapi/imageapi_gd.module on line 44
+[20-Jan-2011 18:39:02] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 35 bytes) in /var/www/html/includes/theme.inc on line 797
+[20-Jan-2011 18:39:16] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 16 bytes) in /var/www/html/includes/theme.inc on line 797
+[20-Jan-2011 18:39:32] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 4864 bytes) in /var/www/html/sites/all/modules/views/plugins/views_plugin_row_fields.inc on line 17
+[20-Jan-2011 18:40:47] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 35 bytes) in /var/www/html/includes/theme.inc on line 797
+[20-Jan-2011 18:41:03] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 4864 bytes) in /var/www/html/sites/all/modules/views/plugins/views_plugin_row_fields.inc on line 29
+[20-Jan-2011 18:49:54] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 30 bytes) in /var/www/html/modules/update/update.module on line 573
+[20-Jan-2011 18:50:14] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 4864 bytes) in /var/www/html/sites/all/modules/views/plugins/views_plugin_cache.inc on line 49
+[20-Jan-2011 18:50:15] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 10 bytes) in /var/www/html/modules/update/update.module on line 573
+[20-Jan-2011 20:50:22] PHP Fatal error:  Allowed memory size of 20971520 bytes exhausted (tried to allocate 16 bytes) in /var/www/html/modules/update/update.module on line 573

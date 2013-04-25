@@ -1,0 +1,68 @@
+core = "6.x"
+description = "Minimal bx theme."
+engine = "phptemplate"
+name = "bx"
+regions[header] = "Header"
+regions[home_banner] = "Home banner"
+regions[service_blocks] = "Service blocks"
+regions[left] = "Left sidebar"
+regions[right] = "Right sidebar"
+regions[content] = "Content"
+regions[content_bottom] = "Content bottom"
+regions[footer] = "Footer"
+regions[hidden] = "Hidden"
+regions[home_bottom] = "Home bottom"
+scripts[] = "js/tao.js"
+scripts[] = "js/jquery.validate.min.js"
+scripts[] = "js/jquery.bxSlider.min.js"
+scripts[] = "js/fancybox/jquery.fancybox-1.3.4.js"
+scripts[] = "js/jquery.twitter.js"
+scripts[] = "js/bx.js"
+
+stylesheets[screen][] = "css/reset.css"
+stylesheets[screen][] = "css/drupal.css"
+;stylesheets[screen][] = "css/base.css"
+stylesheets[screen][] = "js/fancybox/jquery.fancybox-1.3.4.css"
+stylesheets[screen][] = "css/bx.css"
+stylesheets[print][] = "css/reset.css"
+stylesheets[print][] = "css/base.css"
+stylesheets[print][] = "css/print.css"
+
+; Omit core stylesheets.
+; Note that several stylesheets are left included because of their non-invasive
+; or isolated nature:
+;
+;   color/color.css
+;   locale/locale.css
+;
+; Other functionally critical styles should be reimplemented in `drupal.css`
+; without styles that compromise the typographical grid or otherwise complicate
+; subtheming.
+
+stylesheets[all][] = "admin.css"
+stylesheets[all][] = "block.css"
+stylesheets[all][] = "book.css"
+stylesheets[all][] = "comment.css"
+stylesheets[all][] = "dblog.css"
+stylesheets[all][] = "defaults.css"
+stylesheets[all][] = "forum.css"
+stylesheets[all][] = "help.css"
+stylesheets[all][] = "maintenance.css"
+stylesheets[all][] = "node.css"
+stylesheets[all][] = "openid.css"
+stylesheets[all][] = "poll.css"
+stylesheets[all][] = "profile.css"
+stylesheets[all][] = "search.css"
+stylesheets[all][] = "system.css"
+stylesheets[all][] = "system-menus.css"
+stylesheets[all][] = "taxonomy.css"
+stylesheets[all][] = "tracker.css"
+stylesheets[all][] = "update.css"
+stylesheets[all][] = "user.css"
+
+; Information added by drupal.org packaging script on 2010-10-21
+version = "6.x-3.2"
+core = "6.x"
+project = "tao"
+datestamp = "1287680788"
+

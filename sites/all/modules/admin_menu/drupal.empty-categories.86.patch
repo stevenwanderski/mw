@@ -1,0 +1,358 @@
+Index: includes/menu.inc
+===================================================================
+RCS file: /cvs/drupal/drupal/includes/menu.inc,v
+retrieving revision 1.357
+diff -u -p -r1.357 menu.inc
+--- includes/menu.inc	17 Oct 2009 11:39:15 -0000	1.357
++++ includes/menu.inc	30 Oct 2009 02:49:42 -0000
+@@ -118,6 +118,11 @@ define('MENU_IS_LOCAL_TASK', 0x0080);
+ define('MENU_IS_LOCAL_ACTION', 0x0100);
+ 
+ /**
++ * Internal menu flag -- menu item is visible depending child items.
++ */
++define('MENU_DEPENDS_ON_CHILDREN', 0x0200);
++
++/**
+  * @} End of "Menu flags".
+  */
+ 
+@@ -156,6 +161,15 @@ define('MENU_CALLBACK', MENU_VISIBLE_IN_
+ define('MENU_SUGGESTED_ITEM', MENU_VISIBLE_IN_BREADCRUMB | 0x0010);
+ 
+ /**
++ * Menu type -- A container menu item, hidden when no children are accessible.
++ *
++ * Modules may use "container" menu items that are only displayed in case the
++ * current user is able to access any child item below it. They act like normal
++ * items when visible.
++ */
++define('MENU_CONTAINER_ITEM', MENU_VISIBLE_IN_TREE | MENU_VISIBLE_IN_BREADCRUMB | MENU_DEPENDS_ON_CHILDREN);
++
++/**
+  * Menu type -- A task specific to the parent item, usually rendered as a tab.
+  *
+  * Local tasks are menu items that describe actions to be performed on their
+@@ -1267,7 +1281,6 @@ function menu_tree_check_access(&$tree, 
+     }
+   }
+   _menu_tree_check_access($tree);
+-  return;
+ }
+ 
+ /**
+@@ -1275,12 +1288,24 @@ function menu_tree_check_access(&$tree, 
+  */
+ function _menu_tree_check_access(&$tree) {
+   $new_tree = array();
++  $tree_level_access = FALSE;
+   foreach ($tree as $key => $v) {
+     $item = &$tree[$key]['link'];
+     _menu_link_translate($item);
+     if ($item['access']) {
++      // Return that this level is accessible when at least one link on this
++      // tree level is accessible.
++      $tree_level_access = TRUE;
++
++      $child_access = FALSE;
+       if ($tree[$key]['below']) {
+-        _menu_tree_check_access($tree[$key]['below']);
++        $child_access = _menu_tree_check_access($tree[$key]['below']);
++      }
++      // If this link is a MENU_CONTAINER_ITEM and there are no accessible
++      // children, then we mark it as inaccessible and skip it.
++      if ($item['type'] & MENU_DEPENDS_ON_CHILDREN && !$child_access) {
++        $item['access'] = FALSE;
++        continue;
+       }
+       // The weights are made a uniform 5 digits by adding 50000 as an offset.
+       // After _menu_link_translate(), $item['title'] has the localized link title.
+@@ -1291,6 +1316,8 @@ function _menu_tree_check_access(&$tree)
+   // Sort siblings in the tree based on the weights and localized titles.
+   ksort($new_tree);
+   $tree = $new_tree;
++
++  return $tree_level_access;
+ }
+ 
+ /**
+Index: modules/system/system.admin.inc
+===================================================================
+RCS file: /cvs/drupal/drupal/modules/system/system.admin.inc,v
+retrieving revision 1.216
+diff -u -p -r1.216 system.admin.inc
+--- modules/system/system.admin.inc	19 Oct 2009 23:28:40 -0000	1.216
++++ modules/system/system.admin.inc	29 Oct 2009 23:02:59 -0000
+@@ -18,7 +18,7 @@ function system_main_admin_page($arg = N
+   }
+ 
+   // Check for status report errors.
+-  if (system_status(TRUE) && user_access('administer site configuration')) {
++  if (user_access('administer site configuration') && system_status(TRUE)) {
+     drupal_set_message(t('One or more problems were detected with your Drupal installation. Check the <a href="@status">status report</a> for more information.', array('@status' => url('admin/reports/status'))), 'error');
+   }
+   $blocks = array();
+@@ -46,7 +46,7 @@ function system_main_admin_page($arg = N
+         $block['content'] .= $function();
+       }
+       $content = system_admin_menu_block($item);
+-      if ((isset($item['page_callback']) && !in_array($item['page_callback'], array('system_admin_menu_block_page', 'system_admin_config_page', 'system_settings_overview'))) || count($content)) {
++      if ((isset($item['page_callback']) && !in_array($item['page_callback'], array('system_admin_menu_block_page', 'system_admin_config_page'))) || count($content)) {
+         // Only show blocks for items which are not containers, or those which
+         // are containers and do have items we can show.
+         $block['show'] = TRUE;
+@@ -78,7 +78,7 @@ function system_main_admin_page($arg = N
+  */
+ function system_admin_config_page() {
+   // Check for status report errors.
+-  if (system_status(TRUE) && user_access('administer site configuration')) {
++  if (user_access('administer site configuration') && system_status(TRUE)) {
+     drupal_set_message(t('One or more problems were detected with your Drupal installation. Check the <a href="@status">status report</a> for more information.', array('@status' => url('admin/reports/status'))), 'error');
+   }
+   $blocks = array();
+@@ -175,23 +175,6 @@ function system_admin_by_module() {
+ }
+ 
+ /**
+- * Menu callback; displays a module's settings page.
+- */
+-function system_settings_overview() {
+-  // Check database setup if necessary
+-  if (function_exists('db_check_setup') && empty($_POST)) {
+-    db_check_setup();
+-  }
+-
+-  $item = menu_get_item('admin/config');
+-  $content = system_admin_menu_block($item);
+-
+-  $output = theme('admin_block_content', array('content' => $content));
+-
+-  return $output;
+-}
+-
+-/**
+  * Menu callback; displays a listing of all themes.
+  *
+  * @ingroup forms
+Index: modules/system/system.module
+===================================================================
+RCS file: /cvs/drupal/drupal/modules/system/system.module,v
+retrieving revision 1.828
+diff -u -p -r1.828 system.module
+--- modules/system/system.module	29 Oct 2009 06:58:56 -0000	1.828
++++ modules/system/system.module	30 Oct 2009 02:49:00 -0000
+@@ -560,6 +560,7 @@ function system_menu() {
+     'type' => MENU_CALLBACK,
+     'file' => 'system.admin.inc',
+   );
++
+   $items['admin'] = array(
+     'title' => 'Administer',
+     'access arguments' => array('access administration pages'),
+@@ -593,16 +594,18 @@ function system_menu() {
+     'file' => 'system.admin.inc',
+   );
+ 
+-  // Menu items that are basically just menu blocks.
++  // Structure.
+   $items['admin/structure'] = array(
+     'title' => 'Structure',
+     'description' => 'Control how your site looks and feels.',
++    'type' => MENU_CONTAINER_ITEM,
+     'position' => 'right',
+     'weight' => -8,
+     'page callback' => 'system_admin_menu_block_page',
+     'access arguments' => array('access administration pages'),
+     'file' => 'system.admin.inc',
+   );
++
+   // Appearance.
+   $items['admin/appearance'] = array(
+     'title' => 'Appearance',
+@@ -647,9 +650,10 @@ function system_menu() {
+     );
+   }
+ 
+-  // Configuration and modules.
++  // Configuration.
+   $items['admin/config'] = array(
+     'title' => 'Configuration and modules',
++    'type' => MENU_CONTAINER_ITEM,
+     'page callback' => 'system_admin_config_page',
+     'access arguments' => array('access administration pages'),
+     'file' => 'system.admin.inc',
+@@ -661,6 +665,8 @@ function system_menu() {
+     'weight' => -10,
+     'file' => 'system.admin.inc',
+   );
++
++  // Modules.
+   $items['admin/config/modules'] = array(
+     'title' => 'Modules',
+     'description' => 'Enable or disable add-on modules for your site.',
+@@ -694,7 +700,26 @@ function system_menu() {
+     'file' => 'system.admin.inc',
+   );
+ 
+-  // Actions.
++  // System.
++  $items['admin/config/system'] = array(
++    'title' => 'System',
++    'description' => 'General system related configuration.',
++    'type' => MENU_CONTAINER_ITEM,
++    'position' => 'right',
++    'weight' => -5,
++    'page callback' => 'system_admin_menu_block_page',
++    'access arguments' => array('access administration pages'),
++    'file' => 'system.admin.inc',
++  );
++  $items['admin/config/system/site-information'] = array(
++    'title' => 'Site information',
++    'description' => 'Change basic site name, e-mail address, slogan, default front page, number of posts per page, error pages and cron.',
++    'page callback' => 'drupal_get_form',
++    'page arguments' => array('system_site_information_settings'),
++    'access arguments' => array('administer site configuration'),
++    'file' => 'system.admin.inc',
++    'weight' => -10,
++  );
+   $items['admin/config/system/actions'] = array(
+     'title' => 'Actions',
+     'description' => 'Manage the actions defined for your site.',
+@@ -735,7 +760,7 @@ function system_menu() {
+     'file' => 'system.admin.inc',
+   );
+ 
+-  // IP address blocking.
++  // People: IP address blocking.
+   $items['admin/config/people/ip-blocking'] = array(
+     'title' => 'IP address blocking',
+     'description' => 'Manage blocked IP addresses.',
+@@ -760,10 +785,11 @@ function system_menu() {
+     'file' => 'system.admin.inc',
+   );
+ 
+-  // Configuration.
++  // Development.
+   $items['admin/config/development'] = array(
+     'title' => 'Development',
+     'description' => 'Development tools.',
++    'type' => MENU_CONTAINER_ITEM,
+     'position' => 'left',
+     'weight' => 10,
+     'page callback' => 'system_admin_menu_block_page',
+@@ -786,9 +812,20 @@ function system_menu() {
+     'access arguments' => array('administer site configuration'),
+     'file' => 'system.admin.inc',
+   );
++  $items['admin/config/development/logging'] = array(
++    'title' => 'Logging and errors',
++    'description' => "Settings for logging and alerts modules. Various modules can route Drupal's system events to different destinations, such as syslog, database, email, etc.",
++    'page callback' => 'drupal_get_form',
++    'page arguments' => array('system_logging_settings'),
++    'access arguments' => array('administer site configuration'),
++    'file' => 'system.admin.inc',
++  );
++
++  // Media.
+   $items['admin/config/media'] = array(
+     'title' => 'Media',
+     'description' => 'Media tools.',
++    'type' => MENU_CONTAINER_ITEM,
+     'position' => 'left',
+     'weight' => 10,
+     'page callback' => 'system_admin_menu_block_page',
+@@ -814,6 +851,7 @@ function system_menu() {
+   $items['admin/config/services'] = array(
+     'title' => 'Web services',
+     'description' => 'Tools related to web services.',
++    'type' => MENU_CONTAINER_ITEM,
+     'page callback' => 'system_admin_menu_block_page',
+     'access arguments' => array('access administration pages'),
+     'file' => 'system.admin.inc',
+@@ -826,19 +864,12 @@ function system_menu() {
+     'access arguments' => array('administer site configuration'),
+     'file' => 'system.admin.inc',
+   );
+-  $items['admin/config/development/logging'] = array(
+-    'title' => 'Logging and errors',
+-    'description' => "Settings for logging and alerts modules. Various modules can route Drupal's system events to different destinations, such as syslog, database, email, etc.",
+-    'page callback' => 'drupal_get_form',
+-    'page arguments' => array('system_logging_settings'),
+-    'access arguments' => array('administer site configuration'),
+-    'file' => 'system.admin.inc',
+-  );
+ 
+   // Regional and date settings.
+   $items['admin/config/regional'] = array(
+     'title' => 'Regional and language',
+     'description' => 'Regional settings, localization and translation.',
++    'type' => MENU_CONTAINER_ITEM,
+     'position' => 'left',
+     'weight' => -7,
+     'page callback' => 'system_admin_menu_block_page',
+@@ -937,9 +968,11 @@ function system_menu() {
+     'file' => 'system.admin.inc',
+   );
+ 
++  // Search and metadata.
+   $items['admin/config/search'] = array(
+     'title' => 'Search and metadata',
+     'description' => 'Local site search, metadata and SEO.',
++    'type' => MENU_CONTAINER_ITEM,
+     'page callback' => 'system_admin_menu_block_page',
+     'access arguments' => array('access administration pages'),
+     'file' => 'system.admin.inc',
+@@ -960,40 +993,26 @@ function system_menu() {
+     'type' => MENU_CALLBACK,
+     'file' => 'system.admin.inc',
+   );
++
++  // Content authoring.
+   $items['admin/config/content'] = array(
+     'title' => 'Content authoring',
+     'description' => 'Settings related to formatting and authoring content.',
++    'type' => MENU_CONTAINER_ITEM,
+     'position' => 'right',
+     'weight' => 5,
+     'page callback' => 'system_admin_menu_block_page',
+     'access arguments' => array('access administration pages'),
+     'file' => 'system.admin.inc',
+   );
+-  $items['admin/config/system'] = array(
+-    'title' => 'System',
+-    'description' => 'General system related configuration.',
+-    'position' => 'right',
+-    'weight' => -5,
+-    'page callback' => 'system_admin_menu_block_page',
+-    'access arguments' => array('access administration pages'),
+-    'file' => 'system.admin.inc',
+-  );
+-  $items['admin/config/system/site-information'] = array(
+-    'title' => 'Site information',
+-    'description' => 'Change basic site name, e-mail address, slogan, default front page, number of posts per page, error pages and cron.',
+-    'page callback' => 'drupal_get_form',
+-    'page arguments' => array('system_site_information_settings'),
+-    'access arguments' => array('administer site configuration'),
+-    'file' => 'system.admin.inc',
+-    'weight' => -10,
+-  );
+ 
+   // Reports.
+   $items['admin/reports'] = array(
+     'title' => 'Reports',
+     'description' => 'View reports from system logs and other status information.',
++    'type' => MENU_CONTAINER_ITEM,
+     'page callback' => 'system_admin_menu_block_page',
+-    'access arguments' => array('access site reports'),
++    'access arguments' => array('access administration pages'),
+     'weight' => 5,
+     'position' => 'left',
+     'file' => 'system.admin.inc',
+@@ -1020,6 +1039,7 @@ function system_menu() {
+     'type' => MENU_CALLBACK,
+     'file' => 'system.admin.inc',
+   );
++
+   // Default page for batch operations.
+   $items['batch'] = array(
+     'page callback' => 'system_batch_page',

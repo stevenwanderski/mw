@@ -1,0 +1,96 @@
+***************
+*** 139,144 ****
+  define('MENU_SUGGESTED_ITEM', MENU_VISIBLE_IN_BREADCRUMB | 0x0010);
+  
+  /**
+   * Menu type -- A task specific to the parent item, usually rendered as a tab.
+   *
+   * Local tasks are menu items that describe actions to be performed on their
+--- 144,158 ----
+  define('MENU_SUGGESTED_ITEM', MENU_VISIBLE_IN_BREADCRUMB | 0x0010);
+  
+  /**
++  * Menu type -- A grouping menu item, hidden when no children are accessible.
++  *
++  * Modules may use "dynamic" menu items that are only displayed in case the
++  * current user is able to access any child item below it. They act like normal
++  * items when visible.
++  */
++ define('MENU_DYNAMIC_ITEM', MENU_VISIBLE_IN_TREE | MENU_VISIBLE_IN_BREADCRUMB | MENU_DEPENDS_ON_CHILDREN);
++ 
++ /**
+   * Menu type -- A task specific to the parent item, usually rendered as a tab.
+   *
+   * Local tasks are menu items that describe actions to be performed on their
+***************
+*** 1250,1256 ****
+      }
+    }
+    _menu_tree_check_access($tree);
+-   return;
+  }
+  
+  /**
+--- 1264,1269 ----
+      }
+    }
+    _menu_tree_check_access($tree);
+  }
+  
+  /**
+***************
+*** 1258,1269 ****
+   */
+  function _menu_tree_check_access(&$tree) {
+    $new_tree = array();
+    foreach ($tree as $key => $v) {
+      $item = &$tree[$key]['link'];
+      _menu_link_translate($item);
+      if ($item['access']) {
+        if ($tree[$key]['below']) {
+-         _menu_tree_check_access($tree[$key]['below']);
+        }
+        // The weights are made a uniform 5 digits by adding 50000 as an offset.
+        // After _menu_link_translate(), $item['title'] has the localized link title.
+--- 1271,1294 ----
+   */
+  function _menu_tree_check_access(&$tree) {
+    $new_tree = array();
++   $tree_level_access = FALSE;
+    foreach ($tree as $key => $v) {
+      $item = &$tree[$key]['link'];
+      _menu_link_translate($item);
+      if ($item['access']) {
++       // Return that this level is accessible when at least one link on this
++       // tree level is accessible.
++       $tree_level_access = TRUE;
++ 
++       $child_access = FALSE;
+        if ($tree[$key]['below']) {
++         $child_access = _menu_tree_check_access($tree[$key]['below']);
++       }
++       // If this link is a MENU_DYNAMIC_ITEM and there are no accessible
++       // children, then we mark it as inaccessible and skip it.
++       if ($item['type'] & MENU_DEPENDS_ON_CHILDREN && !$child_access) {
++         $item['access'] = FALSE;
++         continue;
+        }
+        // The weights are made a uniform 5 digits by adding 50000 as an offset.
+        // After _menu_link_translate(), $item['title'] has the localized link title.
+***************
+*** 1274,1279 ****
+    // Sort siblings in the tree based on the weights and localized titles.
+    ksort($new_tree);
+    $tree = $new_tree;
+  }
+  
+  /**
+--- 1299,1306 ----
+    // Sort siblings in the tree based on the weights and localized titles.
+    ksort($new_tree);
+    $tree = $new_tree;
++ 
++   return $tree_level_access;
+  }
+  
+  /**

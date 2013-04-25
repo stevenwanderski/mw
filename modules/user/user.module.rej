@@ -1,0 +1,18 @@
+***************
+*** 968,974 ****
+      'description' => "Manage your site's users, groups and access to site features.",
+      'position' => 'left',
+      'page callback' => 'system_admin_menu_block_page',
+-     'access arguments' => array('access administration pages'),
+    );
+    $items['admin/user/user'] = array(
+      'title' => 'Users',
+--- 968,975 ----
+      'description' => "Manage your site's users, groups and access to site features.",
+      'position' => 'left',
+      'page callback' => 'system_admin_menu_block_page',
++     'access callback' => '_system_settings_access',
++     'access arguments' => array('admin/user', 'access administration pages'),
+    );
+    $items['admin/user/user'] = array(
+      'title' => 'Users',

@@ -1,0 +1,5 @@
+; $Id
+name = bx Reader Tools
+description = Handles functionality associated with Reader Tools including password functionality.
+package = bx
+core = 6.x

@@ -1,0 +1,243 @@
+<?php
+
+function bxdev_menu(){
+	$items = array();
+	
+	// service blocks
+	$items['admin/extras'] = array(
+		'title' => 'Extras',
+		'page callback' => 'bxdev_home_landing',
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 50
+	);
+	
+	$items['admin/extras/homepage-blocks'] = array(
+		'title' => 'Service blocks',
+		'page callback' => 'bxdev_home_landing',
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 1
+	);
+	$items['admin/extras/homepage-blocks/strategic-market-planning'] = array(
+		'title' => 'Improve Pricing Management block',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('strategic_market_planning_admin'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 3
+	);
+	$items['admin/extras/homepage-blocks/new-customer-development'] = array(
+		'title' => 'Get Your Value Recognized block',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('new_customer_development_admin'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 2
+	);
+	// $items['admin/extras/homepage-blocks/optimizing-business-processes'] = array(
+	// 	'title' => 'Enhance Sales & Service Processes block',
+	// 	'page callback' => 'drupal_get_form',
+	// 	'page arguments' => array('optimizing_business_processes_admin'),
+	// 	'access arguments' => array('access administration pages'),
+	// 	'type' => MENU_NORMAL_ITEM,
+	// 	'weight' => 4
+	// );
+	$items['admin/extras/homepage-blocks/pricing-optimization'] = array(
+		'title' => 'Stand Out in the Right Markets block',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('pricing_optimization_admin'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 1
+	);
+	
+	// homepage video
+	$items['admin/extras/homepage-video'] = array(
+		'title' => 'Video',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('homepage_video_admin'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 2
+	);
+		
+	// footer
+	$items['admin/extras/footer'] = array(
+		'title' => 'Footer',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('footer_admin'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 3
+	);
+	
+	$items[] = array(
+		'title' => 'Google map',
+		'path' => 'admin/build/block/configure/block/5',
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 45
+	);	
+	
+	$items['admin/extras/blog-landing-title'] = array(
+		'title' => 'Blog landing title',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('blog_landing_title_admin'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 48
+	);	
+			
+	$items['admin/extras/homepage-book'] = array(
+		'title' => 'Homepage book',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('homepage_book_admin'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+		'weight' => 49,		
+	);		
+		
+	return $items;
+}
+
+function strategic_market_planning_admin(){
+	$form = array();
+	$form['strategic_market_planning_data'] = array(
+		'#type' => 'textarea',
+		'#title' => 'Content',
+		'#default_value' => variable_get('strategic_market_planning_data', ''),
+		'#required' => true
+	);
+	return system_settings_form($form);
+}
+
+function new_customer_development_admin(){
+	$form = array();
+	$form['new_customer_development_data'] = array(
+		'#type' => 'textarea',
+		'#title' => 'Content',
+		'#default_value' => variable_get('new_customer_development_data', ''),
+		'#required' => true
+	);
+	return system_settings_form($form);
+}
+
+function optimizing_business_processes_admin(){
+	$form = array();
+	$form['optimizing_business_processes_data'] = array(
+		'#type' => 'textarea',
+		'#title' => 'Content',
+		'#default_value' => variable_get('optimizing_business_processes_data', ''),
+		'#required' => true
+	);
+	return system_settings_form($form);
+}
+
+function pricing_optimization_admin(){
+	$form = array();
+	$form['pricing_optimization_data'] = array(
+		'#type' => 'textarea',
+		'#title' => 'Content',
+		'#default_value' => variable_get('pricing_optimization_data', ''),
+		'#required' => true
+	);
+	return system_settings_form($form);
+}
+
+function footer_admin(){
+	$form = array();
+	$form['footer_data'] = array(
+		'#type' => 'textarea',
+		'#title' => 'Content',
+		'#default_value' => variable_get('footer_data', ''),
+		'#required' => true
+	);
+	return system_settings_form($form);
+}
+
+function homepage_video_admin(){
+	$form = array();
+	$form['#attributes'] = array('enctype' => "multipart/form-data");
+	$form['homepage_video_title_data'] = array(
+		'#type' => 'textfield',
+		'#title' => 'Block title',
+		'#default_value' => variable_get('homepage_video_title_data', ''),
+		'#required' => true
+	);
+	$form['homepage_video_image_data'] = array(
+		'#type' => 'textfield',
+		'#title' => 'Video image',
+		'#default_value' => variable_get('homepage_video_image_data', '')
+	);
+	$form['homepage_video_code_data'] = array(
+		'#type' => 'textarea',
+		'#title' => 'YouTube code',
+		'#default_value' => variable_get('homepage_video_code_data', ''),
+		'#required' => true
+	);
+	return system_settings_form($form);
+}
+
+function blog_landing_title_admin(){
+	$form = array();
+	$form['blog_landing_title_data'] = array(
+		'#type' => 'textfield',
+		'#title' => 'Title',
+		'#default_value' => variable_get('blog_landing_title_data', 'Blog'),
+		'#required' => true
+	);
+	return system_settings_form($form);
+}
+
+function homepage_book_admin(){
+	$form = array();
+	$form['homepage_book'] = array(
+		'#type' => 'textarea',
+		'#title' => 'Content',
+		'#rows' => 12,
+		'#default_value' => variable_get('homepage_book', ''),
+	);
+	return system_settings_form($form);
+}
+
+function bxdev_home_landing(){
+	$content = '<h2>Use the "Extras" flyout menu to make changes!</h2>';
+	return $content;
+}
+
+function bxdev_block($op = 'list', $delta = 0) {
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t('Improve Pricing Management');
+			$blocks[1]['info'] = t('Get Your Value Recognized');
+			$blocks[2]['info'] = t('Enhance Sales & Service Processes');
+			$blocks[3]['info'] = t('Stand Out in the Right Markets');
+			$blocks[5]['info'] = t('Footer');
+			$blocks[6]['info'] = t('YouTube video');
+      return $blocks;
+    case 'view':
+      // $block[0]['subject'] = t(<none>);
+      $block[0]['content'] = variable_get('strategic_market_planning_data', '');
+      $block[1]['content'] = variable_get('new_customer_development_data', '');
+      $block[2]['content'] = variable_get('optimizing_business_processes_data', '');
+      $block[3]['content'] = variable_get('pricing_optimization_data', '');
+      $block[5]['content'] = variable_get('footer_data', '');
+			// $block[6]['subject'] = variable_get('homepage_video_title_data', '');
+			$block[6]['content'] = '
+				<h2>
+					<div class="inner">'.variable_get('homepage_video_title_data', '').'</div>
+				</h2>
+				<div class="video-content">
+					<a class="fancy-trigger" href="#home-video"><img src="'.variable_get('homepage_video_image_data', '').'" /></a>
+				</div>';
+      return $block[$delta];
+  }
+}
+
+
+
+
+
+
+

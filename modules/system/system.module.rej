@@ -1,0 +1,112 @@
+***************
+*** 338,363 ****
+    );
+    $items['admin'] = array(
+      'title' => 'Administer',
+-     'access arguments' => array('access administration pages'),
+      'page callback' => 'system_main_admin_page',
+      'weight' => 9,
+    );
+    $items['admin/compact'] = array(
+      'title' => 'Compact mode',
+      'page callback' => 'system_admin_compact_page',
+-     'access arguments' => array('access administration pages'),
+      'type' => MENU_CALLBACK,
+    );
+    $items['admin/by-task'] = array(
+      'title' => 'By task',
+      'page callback' => 'system_main_admin_page',
+-     'access arguments' => array('access administration pages'),
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+    $items['admin/by-module'] = array(
+      'title' => 'By module',
+      'page callback' => 'system_admin_by_module',
+-     'access arguments' => array('access administration pages'),
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 2,
+    );
+--- 338,366 ----
+    );
+    $items['admin'] = array(
+      'title' => 'Administer',
+      'page callback' => 'system_main_admin_page',
++     'access callback' => '_system_settings_access',
++     'access arguments' => array('admin', 'access administration pages'),
+      'weight' => 9,
+    );
+    $items['admin/compact'] = array(
+      'title' => 'Compact mode',
+      'page callback' => 'system_admin_compact_page',
++     'access callback' => '_system_settings_access',
++     'access arguments' => array('admin', 'access administration pages'),
+      'type' => MENU_CALLBACK,
+    );
+    $items['admin/by-task'] = array(
+      'title' => 'By task',
+      'page callback' => 'system_main_admin_page',
++     'access arguments' => array('admin', 'access administration pages'),
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+    $items['admin/by-module'] = array(
+      'title' => 'By module',
+      'page callback' => 'system_admin_by_module',
++     'access callback' => '_system_settings_access',
++     'access arguments' => array('admin', 'access administration pages'),
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 2,
+    );
+***************
+*** 367,373 ****
+      'position' => 'left',
+      'weight' => -10,
+      'page callback' => 'system_admin_menu_block_page',
+-     'access arguments' => array('access administration pages'),
+    );
+  
+    // menu items that are basically just menu blocks
+--- 370,377 ----
+      'position' => 'left',
+      'weight' => -10,
+      'page callback' => 'system_admin_menu_block_page',
++     'access callback' => '_system_settings_access',
++     'access arguments' => array('admin/content', 'access administration pages'),
+    );
+  
+    // menu items that are basically just menu blocks
+***************
+*** 377,383 ****
+      'position' => 'right',
+      'weight' => -5,
+      'page callback' => 'system_settings_overview',
+-     'access arguments' => array('access administration pages'),
+    );
+    $items['admin/build'] = array(
+      'title' => 'Site building',
+--- 381,388 ----
+      'position' => 'right',
+      'weight' => -5,
+      'page callback' => 'system_settings_overview',
++     'access callback' => '_system_settings_access',
++     'access arguments' => array('admin/settings', 'access administration pages'),
+    );
+    $items['admin/build'] = array(
+      'title' => 'Site building',
+***************
+*** 385,391 ****
+      'position' => 'right',
+      'weight' => -10,
+      'page callback' => 'system_admin_menu_block_page',
+-     'access arguments' => array('access administration pages'),
+    );
+    $items['admin/settings/admin'] = array(
+      'title' => 'Administration theme',
+--- 390,397 ----
+      'position' => 'right',
+      'weight' => -10,
+      'page callback' => 'system_admin_menu_block_page',
++     'access callback' => '_system_settings_access',
++     'access arguments' => array('admin/build', 'access administration pages'),
+    );
+    $items['admin/settings/admin'] = array(
+      'title' => 'Administration theme',

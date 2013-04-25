@@ -1,0 +1,5 @@
+; $Id
+name = bx Custom Module
+description = A funky bx Module.
+package = bx
+core = 6.x

@@ -1,0 +1,66 @@
+***************
+*** 46,52 ****
+          $block['content'] .= $function();
+        }
+        $content = system_admin_menu_block($item);
+-       if ((isset($item['page_callback']) && !in_array($item['page_callback'], array('system_admin_menu_block_page', 'system_admin_config_page', 'system_settings_overview'))) || count($content)) {
+          // Only show blocks for items which are not containers, or those which
+          // are containers and do have items we can show.
+          $block['show'] = TRUE;
+--- 46,52 ----
+          $block['content'] .= $function();
+        }
+        $content = system_admin_menu_block($item);
++       if ((isset($item['page_callback']) && !in_array($item['page_callback'], array('system_admin_menu_block_page', 'system_admin_config_page'))) || count($content)) {
+          // Only show blocks for items which are not containers, or those which
+          // are containers and do have items we can show.
+          $block['show'] = TRUE;
+***************
+*** 78,84 ****
+   */
+  function system_admin_config_page() {
+    // Check for status report errors.
+-   if (system_status(TRUE) && user_access('administer site configuration')) {
+      drupal_set_message(t('One or more problems were detected with your Drupal installation. Check the <a href="@status">status report</a> for more information.', array('@status' => url('admin/reports/status'))), 'error');
+    }
+    $blocks = array();
+--- 78,84 ----
+   */
+  function system_admin_config_page() {
+    // Check for status report errors.
++   if (user_access('administer site configuration') && system_status(TRUE)) {
+      drupal_set_message(t('One or more problems were detected with your Drupal installation. Check the <a href="@status">status report</a> for more information.', array('@status' => url('admin/reports/status'))), 'error');
+    }
+    $blocks = array();
+***************
+*** 175,197 ****
+  }
+  
+  /**
+-  * Menu callback; displays a module's settings page.
+-  */
+- function system_settings_overview() {
+-   // Check database setup if necessary
+-   if (function_exists('db_check_setup') && empty($_POST)) {
+-     db_check_setup();
+-   }
+- 
+-   $item = menu_get_item('admin/config');
+-   $content = system_admin_menu_block($item);
+- 
+-   $output = theme('admin_block_content', array('content' => $content));
+- 
+-   return $output;
+- }
+- 
+- /**
+   * Menu callback; displays a listing of all themes.
+   *
+   * @ingroup forms
+--- 175,180 ----
+  }
+  
+  /**
+   * Menu callback; displays a listing of all themes.
+   *
+   * @ingroup forms
