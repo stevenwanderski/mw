@@ -239,6 +239,29 @@ hr {
 	margin: 0 0 20px;
 }
 
+#content table p {
+	margin: 0;
+}
+
+#main ul,
+#main ol {
+	margin-bottom: 20px;
+}
+
+#main li {
+	margin-left: 20px;
+	color: #666;
+}
+
+#main ul li {
+	list-style: disc;
+}
+
+#main ol li {
+	list-style: decimal;
+}
+
+
 #content p.first {
 	margin-top: 0;
 }
@@ -748,17 +771,17 @@ hr {
 	top: 5px;
 }
 
-#block-menu_block-2 {
+#header .block-nice_menus {
 	position: absolute;
 	right: 0;
 	bottom: 15px;
 }
 
-#block-menu_block-2 li {
+#header .block-nice_menus li {
 	float: left;
 }
 
-#block-menu_block-2 a {
+#header .block-nice_menus a {
 	font-family: avenir, Arial;
 	font-size: 14px;
 	color: #7b7b7b;
@@ -770,8 +793,8 @@ hr {
 	margin-right: 5px;
 }
 
-#block-menu_block-2 a:hover,
-#block-menu_block-2 a.active-trail {
+#header .block-nice_menus a:hover,
+#header .block-nice_menus a.active-trail {
 	background: #fdfdfd;
 	border: solid #dcdcdc 1px;
 	color: #ae3030;
