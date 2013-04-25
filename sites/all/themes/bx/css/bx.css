@@ -483,6 +483,7 @@ hr {
 
 #home-bottom h2 {
 	text-shadow: none;
+	font-family: 'avenir';
 }
 
 #home-bottom #home-bottom-inner {
@@ -492,7 +493,7 @@ hr {
 
 #home-bottom .block {
 	width: 298px;
-	height: 238px;
+	height: 238git px;
 	float: left;
 	border: solid #c0c0c0 1px;
 	background: #fff;
