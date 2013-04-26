@@ -805,6 +805,7 @@ hr {
 	-moz-border-radius: 0 0 4px 4px;
 	-webkit-border-radius: 0 0 4px 4px;
 	border-radius: 0 0 4px 4px;
+	margin-top: -3px;
 }
 
 #header li ul li {
