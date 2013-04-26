@@ -100,15 +100,12 @@
 							<?php if(preg_match('/^\/blog$/', $_SERVER['REQUEST_URI'])): ?>
 								<h1 class='page-title'><?php print variable_get('blog_landing_title_data', ''); ?></h1>
 							<?php else: ?>
-								<?php if ($title): ?><h1 class='page-title'><?php print $title ?></h1><?php endif; ?>
+								<?php if ($title && !$is_front): ?><h1 class='page-title'><?php print $title ?></h1><?php endif; ?>
 							<?php endif; ?>
 							<!-- end if blog landing page -->
 							
-							<?php if($is_front): ?>
-								<a href="/online-store" class="book-link"></a>
-							<?php endif; ?>
-							
 							<?php print $node->field_page_content_top[0]['value'] ?>
+
 						</div>
 						<?php if($node->field_page_header_image[0]['filepath']): ?>
 							<div class="header-image"><img src="/<?php print $node->field_page_header_image[0]['filepath'] ?>" /></div>

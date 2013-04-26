@@ -836,14 +836,22 @@ hr {
 /* HOMEPAGE ======================================================*/
 
 #page-front #content-top {
-	background: url(../images/bg_home_banner.png);
-	height: 312px;
+	background: url(../images/bg_home_banner2.jpg);
+	height: 296px;
+	display: table;
 }
 
 #page-front #content-top .inner {
-	padding-left: 310px;
-	padding-top: 60px;
+	padding-left: 410px;
+	/*padding-top: 8px;*/
 	padding-right: 60px;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#page-front .content-top-value {
+	position: relative;
+	top: -5px;
 }
 
 #page-front h1 {
@@ -873,16 +881,15 @@ hr {
 	margin-bottom: 22px;
 }
 
-#page-front #content-top {
-	margin-top: -10px;
-	position: relative;
-}
-
 #page-front #content-top p {
 	font-size: 16px;
 	color: #ffbfbf;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 	margin-top: 0;
+}
+
+#page-front #content-top p:last-child {
+	margin-bottom: 0;
 }
 
 #page-front #content-top a {
