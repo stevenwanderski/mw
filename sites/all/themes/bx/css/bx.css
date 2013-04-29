@@ -856,7 +856,7 @@ hr {
 
 #page-front h1 {
 	color: #fff;
-	font: normal 40px/44px Georgia;
+	font: normal 39px/44px Georgia;
 	margin-bottom: 10px;
 }
 
@@ -1016,6 +1016,10 @@ h2 {
 	font-size: 22px;
 	font-weight: normal;
 	text-shadow: 1px 1px 1px #eee;
+}
+
+#content h2 {
+	margin-bottom: 20px;
 }
 
 #page-why-marketwerks .content-top-value {
