@@ -261,6 +261,10 @@ hr {
 	list-style: decimal;
 }
 
+#main p + ul {
+	margin-top: -10px;
+}
+
 
 #content p.first {
 	margin-top: 0;
